@@ -64,13 +64,13 @@ export default function Dashboard({ user }) {
           </div>
           
           <div className="flex-1 flex flex-col justify-end">
-            <div className="flex gap-2">
-              <div className="flex flex-col gap-2 text-xs text-zinc-500 pr-2 pt-1 font-medium justify-between">
+            <div className="flex gap-2 items-end">
+              <div className="flex flex-col justify-between text-xs text-zinc-500 pr-2 pb-2 font-medium h-[168px]">
                 <span>Mon</span>
                 <span>Wed</span>
                 <span>Fri</span>
               </div>
-              <div className="flex gap-2 flex-1 items-end overflow-x-auto no-scrollbar pb-2">
+              <div className="flex gap-2 flex-1 overflow-x-auto no-scrollbar pb-2">
                 {data.heatmapData[0].map((_, colIndex) => (
                   <div key={colIndex} className="flex flex-col gap-2">
                     {data.heatmapData.map((row, rowIndex) => {

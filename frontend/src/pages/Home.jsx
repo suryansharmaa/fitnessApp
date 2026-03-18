@@ -31,7 +31,7 @@ function FloatingCard() {
       className="relative w-64 h-80 rounded-3xl glass-card p-6 cursor-grab flex flex-col justify-between shadow-2xl border border-white/10 overflow-hidden group"
     >
       <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      
+
       <div className="relative z-10 flex justify-between items-start">
         <div className="p-3 bg-zinc-900/80 rounded-2xl glass shadow-lg">
           <Activity className="w-6 h-6 text-brand-500" />
@@ -44,9 +44,9 @@ function FloatingCard() {
       <div className="relative z-10 mt-auto">
         <h3 className="text-xl font-bold text-white mb-2 tracking-tight">Deadlift Master</h3>
         <p className="text-sm text-zinc-400 mb-4">Focus on your posterior chain and maintain a neutral spine.</p>
-        
+
         <div className="w-full bg-zinc-800 rounded-full h-1.5 overflow-hidden">
-          <motion.div 
+          <motion.div
             initial={{ width: 0 }}
             animate={{ width: "75%" }}
             transition={{ duration: 1, delay: 0.5, ease: "easeOut" }}
@@ -58,7 +58,7 @@ function FloatingCard() {
           <span className="text-white">75%</span>
         </div>
       </div>
-      
+
       <div className="absolute -top-12 -right-12 w-32 h-32 bg-brand-500/20 rounded-full blur-3xl" />
       <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-fuchsia-500/20 rounded-full blur-3xl" />
     </motion.div>
@@ -86,16 +86,16 @@ export default function Home() {
             </span>
             Next-gen fitness tracking
           </motion.div>
-          
+
           <motion.h1 variants={itemVariants} className="text-5xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-[1.1]">
             Shape Your <br className="hidden lg:block" />
             <span className="text-gradient">Future Body.</span>
           </motion.h1>
-          
+
           <motion.p variants={itemVariants} className="text-lg lg:text-xl text-zinc-400 max-w-xl mx-auto lg:mx-0 mb-10 leading-relaxed tracking-wide">
             Experience fitness tracking redefined. High-fidelity motion design, smart analytics, and adaptive workout plans tailored to your goals.
           </motion.p>
-          
+
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
             <MagneticButton variant="accent" onClick={() => navigate('/login')}>
               Get Started
@@ -107,7 +107,7 @@ export default function Home() {
           </motion.div>
         </div>
 
-        <motion.div 
+        <motion.div
           variants={itemVariants}
           className="flex-1 flex justify-center items-center relative w-full perspective-1000 mb-20 lg:mb-0"
         >
@@ -152,9 +152,9 @@ export default function Home() {
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center">
                 <Activity className="w-5 h-5 text-white" />
               </div>
-              <span className="font-bold text-xl tracking-tight">Fit<span className="text-violet-400">Flow</span></span>
+              <span className="font-bold text-xl tracking-tight">Fitness<span className="text-violet-400">App</span></span>
             </div>
-            <p className="text-zinc-500 max-w-md">The ultimate multi-page dynamic MERN application for modern fitness tracking. Scroll gracefully, track consistently.</p>
+            <p className="text-zinc-500 max-w-md">The ultimate multi-page dynamic MERN application for modern fitness tracking.</p>
           </div>
           <div>
             <h4 className="text-white font-semibold mb-6">Platform</h4>

@@ -40,6 +40,7 @@ app.post("/api/auth/register", async (req, res) => {
     const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '7d' });
     res.status(201).json({ user: { id: user._id, name: user.name, email: user.email }, token });
   } catch (err) {
+    console.error("Registration Error:", err);
     res.status(500).json({ error: "Registration failed" });
   }
 });
@@ -151,8 +152,9 @@ app.get("/exercises", async (req, res) => {
 });
 
 // --- Route: Smart Planner Algorithm ---
-app.post("/api/planner", async (req, res) => {
+app.post("/api/planner", auth, async (req, res) => {
   const { goal, equipment } = req.body;
+  const userId = req.user.userId;
   if (!goal || !equipment) return res.status(400).json({ error: "Goal and equipment are required." });
 
   try {
@@ -198,12 +200,58 @@ app.post("/api/planner", async (req, res) => {
       }
     }
 
-    const newWorkout = new WorkoutGroup({ title: planTitle, duration, exercises });
+    const newWorkout = new WorkoutGroup({ title: planTitle, duration, exercises, userId });
     await newWorkout.save();
 
     res.json(newWorkout);
   } catch (err) {
     res.status(500).json({ error: "Algorithm synthesis failed" });
+  }
+});
+
+// --- Route: Get User Workouts History ---
+app.get("/api/user/workouts", auth, async (req, res) => {
+  try {
+    const workouts = await WorkoutGroup.find({ userId: req.user.userId }).sort({ createdAt: -1 });
+    res.json(workouts);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch workouts" });
+  }
+});
+
+// --- Route: Mark Workout Complete & Update Stats ---
+app.post("/api/user/workouts/:id/complete", auth, async (req, res) => {
+  try {
+    const workout = await WorkoutGroup.findOne({ _id: req.params.id, userId: req.user.userId });
+    if (!workout) return res.status(404).json({ error: "Workout not found" });
+    if (workout.completed) return res.status(400).json({ error: "Already completed" });
+
+    workout.completed = true;
+    await workout.save();
+
+    // Dynamically update user dashboard stats (Calculate ~10 kcal/min roughly)
+    const user = await User.findById(req.user.userId);
+    const durationMins = parseInt(workout.duration) || 45;
+    
+    user.workoutActualTime += durationMins;
+    user.dailyBurn += durationMins * 10;
+    
+    // Increment the current day's heatmap level (0 to 3 max)
+    const currentDayIndex = new Date().getDay() === 0 ? 6 : new Date().getDay() - 1; // 0=Mon, 6=Sun
+    const currentWeekIndex = 11; // Displaying last 12 weeks, current is the last column
+    
+    if (user.heatmapData[currentDayIndex]) {
+      const currentLevel = user.heatmapData[currentDayIndex][currentWeekIndex];
+      user.heatmapData[currentDayIndex][currentWeekIndex] = Math.min(3, currentLevel + 1);
+      user.markModified('heatmapData'); // Required for nested arrays in Mongoose
+    }
+
+    await user.save();
+
+    res.json({ success: true, workout });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to complete workout" });
   }
 });
 
