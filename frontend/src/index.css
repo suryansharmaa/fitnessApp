@@ -1,0 +1,70 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-brand-500: #8b5cf6;
+  --color-brand-600: #7c3aed;
+  
+  --color-dark-bg: #09090b;
+  --color-dark-surface: #18181b;
+  --color-dark-surface-hover: #27272a;
+  --color-dark-border: #3f3f46;
+
+  /* Fonts */
+  --font-sans: 'Inter', 'Geist', sans-serif;
+  --font-display: 'Inter', 'Geist', sans-serif;
+}
+
+@layer base {
+  :root {
+    --bg-primary: #09090b;
+    --bg-secondary: #18181b;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --brand: #8b5cf6;
+    --border-color: #27272a;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+}
+
+@layer components {
+  /* Bento Box Grid Utilities */
+  .bento-grid {
+    @apply grid gap-4 md:gap-6 auto-rows-[minmax(180px,auto)];
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .bento-item {
+    @apply relative overflow-hidden rounded-3xl bg-zinc-900 border border-zinc-800 p-6 flex flex-col transition-all duration-300;
+  }
+  
+  /* Glassmorphism Utilities */
+  .glass {
+    @apply bg-zinc-900/60 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)];
+  }
+
+  .glass-card {
+    @apply bg-zinc-900/70 backdrop-blur-md rounded-2xl border border-white/5;
+  }
+
+  /* Text Gradients */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-fuchsia-400;
+  }
+  
+  /* Hide Scrollbar */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+}
