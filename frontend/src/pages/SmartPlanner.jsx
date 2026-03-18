@@ -48,7 +48,7 @@ export default function SmartPlanner() {
   const fetchHistory = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:8080/api/user/workouts', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/workouts`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
@@ -69,18 +69,18 @@ export default function SmartPlanner() {
   const handleGenerate = async (e) => {
     e.preventDefault();
     setGenerating(true);
-    
+
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:8080/api/planner', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/planner`, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ goal, equipment })
       });
-      
+
       if (!res.ok) throw new Error("Backend unavailable");
       const data = await res.json();
       setPlan(data);
@@ -111,7 +111,7 @@ export default function SmartPlanner() {
     setCompleting(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:8080/api/user/workouts/${workoutId}/complete`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/workouts/${workoutId}/complete`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -136,7 +136,7 @@ export default function SmartPlanner() {
       className="max-w-6xl mx-auto"
     >
       <h2 className="text-4xl font-extrabold mb-2 tracking-tight flex items-center gap-3">
-        Smart Planner 
+        Smart Planner
         <span className="px-3 py-1 flex items-center gap-1 text-sm font-bold bg-gradient-to-r from-brand-500 to-fuchsia-500 text-white pb-1.5 pt-2 rounded-full shadow-[0_0_20px_rgba(139,92,246,0.4)]">
           <Sparkles className="w-3.5 h-3.5" /> AI
         </span>
@@ -150,7 +150,7 @@ export default function SmartPlanner() {
               <label className="text-sm font-medium text-zinc-300 flex items-center gap-2">
                 <Target className="w-4 h-4 text-brand-400" /> Primary Goal
               </label>
-              <ToggleGroup 
+              <ToggleGroup
                 options={[
                   { value: 'muscle', label: 'Build Muscle' },
                   { value: 'weight', label: 'Lose Weight' }
@@ -164,7 +164,7 @@ export default function SmartPlanner() {
               <label className="text-sm font-medium text-zinc-300 flex items-center gap-2">
                 <Dumbbell className="w-4 h-4 text-brand-400" /> Equipment Availability
               </label>
-              <ToggleGroup 
+              <ToggleGroup
                 options={[
                   { value: 'yes', label: 'Full Gym' },
                   { value: 'no', label: 'Bodyweight Only' }
@@ -196,13 +196,13 @@ export default function SmartPlanner() {
             ) : history.length > 0 ? (
               <div className="space-y-3 flex flex-col max-h-[300px] overflow-y-auto no-scrollbar pr-2">
                 {history.map(workout => (
-                  <button 
+                  <button
                     key={workout._id}
                     onClick={() => setPlan(workout)}
                     className={clsx(
                       "text-left p-3 rounded-xl border text-sm transition-all focus:outline-none",
-                      plan?._id === workout._id 
-                        ? "bg-brand-500/10 border-brand-500/30 text-brand-100" 
+                      plan?._id === workout._id
+                        ? "bg-brand-500/10 border-brand-500/30 text-brand-100"
                         : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200"
                     )}
                   >
@@ -223,14 +223,14 @@ export default function SmartPlanner() {
         <div className="lg:col-span-2">
           <AnimatePresence mode="wait">
             {plan ? (
-              <motion.div 
+              <motion.div
                 key="result"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 className="bg-zinc-900 border border-brand-500/20 rounded-3xl p-8 relative overflow-hidden flex flex-col h-full"
               >
                 <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl" />
-                
+
                 <div className="mb-6 border-b border-white/5 pb-6 flex justify-between items-start">
                   <div>
                     <span className="text-brand-400 font-mono text-sm tracking-wider uppercase mb-1 block">Generated Routine</span>
@@ -259,11 +259,11 @@ export default function SmartPlanner() {
 
                 <div className="space-y-4 flex-1">
                   {plan.exercises.map((ex, i) => (
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.1 }}
-                      key={ex._id || ex.name + i} 
+                      key={ex._id || ex.name + i}
                       className="flex items-center justify-between p-4 rounded-xl glass-card bg-zinc-900/40 hover:bg-zinc-800/60 transition-colors"
                     >
                       <PopCheckbox label={ex.name} checked={plan.completed} />
@@ -276,7 +276,7 @@ export default function SmartPlanner() {
                 </div>
               </motion.div>
             ) : (
-              <motion.div 
+              <motion.div
                 key="empty"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

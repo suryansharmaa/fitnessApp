@@ -18,7 +18,7 @@ export default function Dashboard({ user }) {
     const fetchProgress = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:8080/api/user/progress', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/progress`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.ok) {
@@ -62,7 +62,7 @@ export default function Dashboard({ user }) {
             </h3>
             <span className="text-sm font-medium text-zinc-400">Last 12 Weeks</span>
           </div>
-          
+
           <div className="flex-1 flex flex-col justify-end">
             <div className="flex gap-2 items-end">
               <div className="flex flex-col justify-between text-xs text-zinc-500 pr-2 pb-2 font-medium h-[168px]">

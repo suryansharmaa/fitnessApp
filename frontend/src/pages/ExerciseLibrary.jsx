@@ -27,7 +27,7 @@ export default function ExerciseLibrary() {
     const fetchExercises = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`http://localhost:8080/exercises?bodyPart=${selectedCategory}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/exercises?bodyPart=${selectedCategory}`);
         if (!res.ok) throw new Error('Network response was not ok');
         const data = await res.json();
         if (isMounted) setExercises(data.exercises || []);
@@ -63,12 +63,12 @@ export default function ExerciseLibrary() {
           <h2 className="text-3xl font-bold text-white mb-2">Exercise Library</h2>
           <p className="text-zinc-400">Master your form with our comprehensive collection.</p>
         </div>
-        
+
         <div className="relative w-full md:w-auto">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-          <input 
-            type="text" 
-            placeholder="Search exercises..." 
+          <input
+            type="text"
+            placeholder="Search exercises..."
             className="w-full md:w-64 pl-10 pr-4 py-2 bg-zinc-900 border border-zinc-800 rounded-full text-sm text-white focus:outline-none focus:ring-2 focus:ring-brand-500/50 transition-all"
           />
         </div>
@@ -80,11 +80,10 @@ export default function ExerciseLibrary() {
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors duration-200 border ${
-              selectedCategory === cat 
-                ? 'bg-brand-500 text-white border-brand-500' 
+            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors duration-200 border ${selectedCategory === cat
+                ? 'bg-brand-500 text-white border-brand-500'
                 : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:text-white hover:bg-zinc-800'
-            }`}
+              }`}
           >
             {cat.charAt(0).toUpperCase() + cat.slice(1)}
           </button>
@@ -97,21 +96,21 @@ export default function ExerciseLibrary() {
           <Loader2 className="w-8 h-8 animate-spin text-brand-500" />
         </div>
       ) : (
-        <motion.div 
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="show"
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
         >
           {exercises.map((exercise, i) => (
-            <motion.div 
-              key={exercise.name + i} 
+            <motion.div
+              key={exercise.name + i}
               variants={cardVariants}
               className="group glass-card overflow-hidden hover:border-brand-500/50 transition-colors"
             >
               <div className="aspect-square bg-zinc-950 flex items-center justify-center p-4">
-                <img 
-                  src={exercise.gifUrl} 
+                <img
+                  src={exercise.gifUrl}
                   alt={exercise.name}
                   className="w-full h-full object-contain filter invert opacity-80 group-hover:opacity-100 transition-opacity"
                   loading="lazy"

@@ -18,17 +18,17 @@ export default function AuthPage({ setAuth }) {
     setError('');
 
     const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
-    
+
     try {
-      const res = await fetch(`http://localhost:8080${endpoint}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
-      
+
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Authentication failed');
-      
+
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       setAuth(data.user);
@@ -66,9 +66,9 @@ export default function AuthPage({ setAuth }) {
         </div>
 
         {error && (
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }} 
-            animate={{ opacity: 1, y: 0 }} 
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
             className="p-3 mb-6 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center justify-center"
           >
             {error}
@@ -144,12 +144,12 @@ export default function AuthPage({ setAuth }) {
 
         <div className="mt-8 text-center text-sm text-zinc-500">
           {isLogin ? "Don't have an account? " : "Already have an account? "}
-          <button 
-            type="button" 
+          <button
+            type="button"
             onClick={() => {
               setIsLogin(!isLogin);
               setError('');
-            }} 
+            }}
             className="text-brand-400 font-semibold hover:text-brand-300 transition-colors"
           >
             {isLogin ? "Sign up" : "Sign in"}
